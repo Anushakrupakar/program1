@@ -75,7 +75,7 @@ pipeline{
             steps {
                 script {
                    echo 'deploying docker image...'
-                    sh 'sudo yum install gettext-base -y'
+                    sh 'sudo yum install gettext -y'
                     sh 'envsubst < java-mvn-deploy-svc.yml | sudo /usr/local/bin/kubectl create -f -'
                     
 
