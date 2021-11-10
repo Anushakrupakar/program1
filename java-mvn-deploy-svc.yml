@@ -14,9 +14,12 @@ spec:
       labels:
         app: $APP_NAME
     spec:
+      imagePullsecrets:
+      - name: my-registry-key
       containers:
-      - name: sample-ctr
+      - name: $APP_NAME
         image: devopstrainer/java-mvn-privaterepo:$BUILD_NUMBER
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
 apiVersion: v1
