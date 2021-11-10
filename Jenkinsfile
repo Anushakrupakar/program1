@@ -4,7 +4,11 @@ pipeline{
         jdk 'myjava'
         maven 'mymaven'
     }
-    parameters{
+    environment{
+       APP_NAME='java-mvn-app'
+       IMAGE_NAME=$BUILD_NUMBER
+    }
+        parameters{
         choice(name:'VERSION',choices:['1.1.0','1.2.0','1.3.0'],description:'version of the code')
         booleanParam(name: 'executeTests',defaultValue: true,description:'tc validity')
     }
@@ -55,9 +59,9 @@ pipeline{
                     echo "BUILDING THE DOCKER IMAGE"
                     echo "Deploying version ${params.VERSION}"
                     withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                        sh 'sudo docker build -t devopstrainer/java-mvn-privaterepo:$BUILD_NUMBER .'
+                        sh 'sudo docker build -t devopstrainer/java-mvn-privaterepo:${IMAGE_NAME} .'
                         sh 'sudo sudo docker login -u $USER -p $PASS'
-                        sh 'sudo docker push devopstrainer/java-mvn-privaterepo:$BUILD_NUMBER'
+                        sh 'sudo docker push devopstrainer/java-mvn-privaterepo:${IMAGE_NAME}'
                 }
             }
         }
@@ -70,9 +74,7 @@ pipeline{
             steps {
                 script {
                    echo 'deploying docker image...'
-                   sh 'sudo /usr/local/bin/kubectl version'
-                   sh 'sudo /usr/local/bin/kubectl get nodes'
-                   sh 'sudo /usr/local/bin/kubectl create deployment nginx-deployment --image=nginx'
+                  sh 'sudo /usr/local/bin/kubectl create -f '
                 }
             }
         }
