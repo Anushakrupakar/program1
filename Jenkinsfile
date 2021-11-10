@@ -59,9 +59,9 @@ pipeline{
                     echo "BUILDING THE DOCKER IMAGE"
                     echo "Deploying version ${params.VERSION}"
                     withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                        sh 'sudo docker build -t devopstrainer/java-mvn-privaterepo:${IMAGE_NAME} .'
+                        sh 'sudo docker build -t devopstrainer/java-mvn-privaterepo:$BUILD_NUMBER .'
                         sh 'sudo sudo docker login -u $USER -p $PASS'
-                        sh 'sudo docker push devopstrainer/java-mvn-privaterepo:${IMAGE_NAME}'
+                        sh 'sudo docker push devopstrainer/java-mvn-privaterepo:$BUILD_NUMBER'
                 }
             }
         }
@@ -74,7 +74,7 @@ pipeline{
             steps {
                 script {
                    echo 'deploying docker image...'
-                  sh 'sudo /usr/local/bin/kubectl create -f '
+                    sh 'envsubst < java-mvn-deploy-svc.yml | sudo /usr/local/bin/kubectl create -f -'
                 }
             }
         }
