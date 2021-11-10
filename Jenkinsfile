@@ -76,9 +76,7 @@ pipeline{
                    echo 'deploying docker image...'
                     sh 'yum install gettext-base -y'
                     sh 'envsubst < java-mvn-deploy-svc.yml | sudo /usr/local/bin/kubectl create -f -'
-                    # run kubectl secret for private registry cmnd once from jenkins server manually no need to put in pipepline'
-                        # docker login
-                        # kubectl create secret 
+                    
 
                 }
             }
