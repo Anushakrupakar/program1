@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: sample-ctr
-        image: devopstrainer/java-mvn-privaterepo:2
+        image: devopstrainer/java-mvn-privaterepo:$BUILD_NUMBER
         ports:
         - containerPort: 8080
 apiVersion: v1
