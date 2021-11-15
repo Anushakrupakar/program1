@@ -53,7 +53,7 @@ pipeline{
             script{
                 echo "Containerising the app"
                withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-                sh 'sudosudo docker build -t devopstrainer/java-mvn-privaterepos:$BUILD_NUMBER .'
+                sh 'sudo docker build -t devopstrainer/java-mvn-privaterepos:$BUILD_NUMBER .'
     sh 'sudo docker login -u $USERNAME -p $PASSWORD'
     sh 'sudo docker push devopstrainer/java-mvn-privaterepos:$BUILD_NUMBER'
     
