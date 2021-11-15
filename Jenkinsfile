@@ -45,7 +45,7 @@ pipeline{
               echo "building version ${NEW_VERSION}"
               sh 'mvn package'
         }
-    }
+              }
         }
 
     stage("Builddockerimage"){      
@@ -65,7 +65,5 @@ pipeline{
         sh 'sudo docker run -itd -P devopstrainer/java-mvn-privaterepos:$BUILD_NUMBER'
     }
 
-    }
-}
     }
 }
