@@ -1,5 +1,5 @@
 pipeline{
-    agent none
+    agent any
     tools{
         jdk 'myjava'
         maven 'mymaven'
@@ -9,7 +9,6 @@ pipeline{
     }
     stages{
         stage("COMPILE"){
-            agent {label 'linux_slave'}
             steps{
                 script{
                      echo "Compiling the code"
@@ -19,9 +18,7 @@ pipeline{
             }
                     }
         stage("UnitTest"){
-            agent any
-            
-              steps{
+            steps{
                 script{
              echo "Run the unit test"
              sh 'mvn test'
@@ -34,8 +31,7 @@ pipeline{
               }
         }
         stage("Package"){
-            agent {label 'linux_slave'}
-              steps{
+           steps{
                 script{
               echo "Building the app"
               echo "building version ${NEW_VERSION}"
@@ -43,14 +39,21 @@ pipeline{
         }
     }
         }
-    stage("Deploy"){
-      
+    stage("Builddockerimage"){      
         steps{
             script{
-                echo "Deploying the app"
-                echo "Deploying ${NEW_VERSION}"
-            }
+                echo "Containerising the app"
+               withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                sh 'sudosudo docker build -t devopstrainer/java-mvn-privaterepos:$BUILD_NUMBER .'
+    sh 'sudo docker login -u $USERNAME -p $PASSWORD'
+    sh 'sudo docker push devopstrainer/java-mvn-privaterepos:$BUILD_NUMBER'
+    
+            }}
         }
+    }
+    stage("Deploydockercontainer"){
+        echo "Deploying the app"
+        sh 'sudo docker run -itd -P devopstrainer/java-mvn-privaterepos:$BUILD_NUMBER'
     }
     }
 }
