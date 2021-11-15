@@ -11,7 +11,7 @@ pipeline{
     }
     stages{
         stage("COMPILE"){
-            agent {label 'linux_slave'}
+           
             steps{
                 script{
                      echo "Compiling the code"
@@ -42,7 +42,7 @@ pipeline{
 
            steps{
 
-            agent {label 'linux_slave'}
+         
               steps{
 
                 script{
@@ -73,3 +73,4 @@ pipeline{
     }
 }
     }
+}
