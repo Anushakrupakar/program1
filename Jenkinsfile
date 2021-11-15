@@ -22,9 +22,7 @@ pipeline{
                     }
         stage("UnitTest"){
 
-            steps{
-
-            
+           
               steps{
 
                 script{
@@ -40,9 +38,6 @@ pipeline{
         }
         stage("Package"){
 
-           steps{
-
-         
               steps{
 
                 script{
