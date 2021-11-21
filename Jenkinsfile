@@ -70,6 +70,7 @@ pipeline{
                 def ShellCmd = "bash ./remote-server.sh"
                  sshagent(['deploy-server-ssh-key']) {
                       withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                           sh "scp remote-server.sh ${ec2Instance}:/home/ec2-user"
                       sh "ssh -o StrictHostKeyChecking=no ec2-user@13.235.115.181 ${ShellCmd}"
                    }
                   }
