@@ -67,6 +67,7 @@ pipeline{
         steps{
             script{
               echo "Deploying the app"
+               
                sshagent(['deploy-server-ssh-key']) {
                       withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                      sh "ssh -o StrictHostKeyChecking=no ec2-user@13.235.115.181 'sudo amazon-linux-extras install docker -y'"
