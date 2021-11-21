@@ -5,6 +5,7 @@ pipeline{
     tools{
         jdk 'myjava'
         maven 'mymaven'
+         dockerTool 'mydocker'
     }
     environment{
         NEW_VERSION='1.4.0'
@@ -67,7 +68,6 @@ pipeline{
              def dockerCmd = 'sudo docker run -itd -p 8001:80 devopstrainer/java-mvn-privaterepos:$BUILD_NUMBER'
                   sshagent(['deploy-server-ssh-key']) {
                       sh "ssh -o StrictHostKeyChecking=no ec2-user@13.235.115.181"
-                      sh 'sudo yum install docker -y'
                       sh 'sudo systemctl start docker'
                       withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                            sh 'sudo docker login -u $USERNAME -p $PASSWORD'
