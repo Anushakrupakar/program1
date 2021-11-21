@@ -67,12 +67,13 @@ pipeline{
         steps{
             script{
               echo "Deploying the app"
-                def ShellCmd = "bash ./remote-server.sh"
-                 sshagent(['deploy-server-ssh-key']) {
+               sshagent(['deploy-server-ssh-key']) {
                       withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-                           sh "scp remote-server.sh ${ec2Instance}:/home/ec2-user"
-                      sh "ssh -o StrictHostKeyChecking=no ec2-user@13.235.115.181 ${ShellCmd}"
-                   }
+                     sh "ssh -o StrictHostKeyChecking=no ec2-user@13.235.115.181 'sudo amazon-linux-extras install docker -y'"
+                          sh "ssh -o StrictHostKeyChecking=no ec2-user@13.235.115.181 'sudo systemctl start docker'"
+                          sh "ssh -o StrictHostKeyChecking=no ec2-user@13.235.115.181 'sudo docker login -u $USERNAME -p $PASSWORD'"
+                          sh "ssh -o StrictHostKeyChecking=no ec2-user@13.235.115.181 'sudo docker run -itd -p 8000:80 devopstrainer/java-mvn-repos:$BUILDNUMBER'"
+                      }
                   }
                 }
             }
