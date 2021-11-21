@@ -5,7 +5,7 @@ pipeline{
     tools{
         jdk 'myjava'
         maven 'mymaven'
-         dockerTool 'mydocker'
+      
     }
     environment{
         NEW_VERSION='1.4.0'
