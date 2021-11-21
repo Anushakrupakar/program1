@@ -54,19 +54,29 @@ pipeline{
                 echo "Containerising the app"
                withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                 sh 'sudo docker build -t devopstrainer/java-mvn-privaterepos:$BUILD_NUMBER .'
-    sh 'sudo docker login -u $USERNAME -p $PASSWORD'
-    sh 'sudo docker push devopstrainer/java-mvn-privaterepos:$BUILD_NUMBER'
-    
-            }}
+                  sh 'sudo docker login -u $USERNAME -p $PASSWORD'
+                 sh 'sudo docker push devopstrainer/java-mvn-privaterepos:$BUILD_NUMBER'
+                }
+            }
         }
     }
     stage("Deploydockercontainer"){
         steps{
             script{
-        echo "Deploying the app"
-        sh 'sudo docker run -itd -P devopstrainer/java-mvn-privaterepos:$BUILD_NUMBER'
-    }
+              echo "Deploying the app"
+               # sh 'sudo docker run -itd -P devopstrainer/java-mvn-privaterepos:$BUILD_NUMBER'
+                def dockerCmd = 'sudo docker run -itd -p 8001:80 devopstrainer/java-mvn-privaterepos:$BUILD_NUMBER'
+                  sshagent(['deploy-server-ssh-key']) {
+                      sh "ssh -o StrictHostKeyChecking=no ec2-user@13.235.115.181"
+                      sh 'sudo yum install docker -y'
+                      sh 'sudo systemctl start docker'
+                      withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                           sh 'sudo docker login -u $USERNAME -p $PASSWORD'
+                      sh "ssh -o StrictHostKeyChecking=no ec2-user@13.235.115.181 ${dockerCmd}"
+                   }
+                  }
+                }
+            }
         }
     }
-    }
-}
+        }
