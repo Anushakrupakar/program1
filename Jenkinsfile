@@ -6,16 +6,14 @@ pipeline{
     }
     environment{
        APP_NAME='java-mvn-app'
-       
-    }
+       }
         parameters{
         choice(name:'VERSION',choices:['1.1.0','1.2.0','1.3.0'],description:'version of the code')
         booleanParam(name: 'executeTests',defaultValue: true,description:'tc validity')
     }
     stages{
         stage("COMPILE"){
-          
-            steps{
+           steps{
                 script{
                     echo "Compiling the code"
                     sh 'mvn compile'
@@ -23,8 +21,7 @@ pipeline{
             }
         }
         stage("UNITTEST"){
-           
-            when{
+           when{
                 expression{
                     params.executeTests == true
                 }
