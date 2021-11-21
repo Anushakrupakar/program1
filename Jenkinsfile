@@ -42,8 +42,6 @@ pipeline{
             }
         }
          stage("PACKAGE"){
-           
-           
             steps{
                 script{
                     echo "Packaging the code"
@@ -51,10 +49,8 @@ pipeline{
                 }
             }
         }
-         stage("BUILD THE DOCKER IMAGE"){
-         
-            
-            steps{
+         stage("BUILD THE DOCKER IMAGE"){        
+               steps{
                 script{
                     echo "BUILDING THE DOCKER IMAGE"
                     echo "Deploying version ${params.VERSION}"
@@ -76,10 +72,8 @@ pipeline{
                 script {
                    echo 'deploying docker image...'
                     sh 'envsubst < java-mvn-deploy-svc.yml | sudo /usr/local/bin/kubectl apply -f -'
-                    
-
-                }
+            }
             }
         }
 }
-    }
+}
