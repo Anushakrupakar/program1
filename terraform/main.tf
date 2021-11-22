@@ -10,15 +10,6 @@ provider "aws" {
   # Configuration options
     region = var.region
 }
-variable vpc_cidr_block{
-  dafault = 
-}
-variable subnet_cidr_block {
-
-}
-variable az {}
-variable instance_type{}
-variable region{}
 # create a vpc
 resource "aws_vpc" "ownvpc" {
   #cidr_block = "10.0.0.0/16"
