@@ -61,7 +61,7 @@ pipeline{
         }
         steps{
             script{
-                dir('/var/lib/jenkins/workspace/${BRANCH_NAME}_${JOB_NAME}/Terraform'){
+                dir('terraform'){
                     sh "terraform init"
                     sh "terraform apply --auto-approve" 
                      EC2_PUBLIC_IP = sh(
