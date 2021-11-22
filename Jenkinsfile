@@ -79,7 +79,7 @@ pipeline{
              sleep(time: 90, unit: "SECONDS")
               echo "Deploying the app to ec2-instance provisioned bt TF"
               echo "${EC2_PUBLIC_IP}"
-               def ShellCmd= "sudo docker run -itd -P ${IMAGE}:$BUILD_NUMBER"
+               def ShellCmd= "sudo docker run -itd -P devopstrainer/java-mvn-privaterepos:$BUILD_NUMBER"
                sshagent(['deploy-server-ssh-key']) {
                       withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                         sh "ssh -o StrictHostKeyChecking=no ec2-user@${EC2_PUBLIC_IP} 'sudo docker login -u $USERNAME -p $PASSWORD'"
