@@ -9,7 +9,7 @@ variable az {
     default = "ap-south-1a"
 }
 variable vpc_cidr_block{
-  dafault = "10.0.0.0/16"
+  default = "10.0.0.0/16"
 }
 
 variable instance_type{
