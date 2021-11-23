@@ -45,7 +45,7 @@ pipeline{
                 echo "Containerising the app"
                 sh 'sudo yum install docker -y'
                 sh 'sudo systemctl start docker'
-               withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+               withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                 sh 'sudo docker build -t ${IMAGE}:$BUILD_NUMBER .'
                   sh 'sudo docker login -u $USERNAME -p $PASSWORD'
                  sh 'sudo docker push $IMAGE:$BUILD_NUMBER'
