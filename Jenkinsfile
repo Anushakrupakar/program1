@@ -80,7 +80,7 @@ pipeline{
               echo "${EC2_PUBLIC_IP}"
                def ShellCmd= "sudo docker run -itd -P devopstrainer/java-mvn-privaterepos:$BUILD_NUMBER"
                sshagent(['deploy-server-ssh-key']) {
-                      withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                      withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                         sh "ssh -o StrictHostKeyChecking=no ec2-user@${EC2_PUBLIC_IP} 'sudo docker login -u $USERNAME -p $PASSWORD'"
                         sh "ssh -o StrictHostKeyChecking=no ec2-user@${EC2_PUBLIC_IP}  ${ShellCmd}"
                           sh "terraform destroy --auto-approve"
